@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview Questions - PrepMate</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Search & Filter */
+        .search-filter {
+            padding: 40px 60px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e1e8ed;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46,204,113,0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid #e1e8ed;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: #2ecc71;
+            color: white;
+            border-color: #2ecc71;
+            transform: translateY(-2px);
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+        }
+
+        .topic-header {
+            padding: 30px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .topic-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .question-count {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .topic-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .questions-list {
+            padding: 25px 30px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .question-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f2f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question-item:hover {
+            background: #f8f9ff;
+            padding-left: 10px;
+        }
+
+        .question-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .question-difficulty {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .easy { background: #d5f4e6; color: #27ae60; }
+        .medium { background: #fef5d4; color: #f39c12; }
+        .hard { background: #fadbd8; color: #e74c3c; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            float: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar, .search-filter, .topics-grid {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            PrepMate
+        </div>
+        <div class="user-info">
+            <span>Welcome back!</span>
+            <a href="dashboard.html" style="color: #2c3e50; text-decoration: none;">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="search-filter">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search questions... (DSA, SQL, System Design...)">
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="DSA">DSA</button>
+                <button class="filter-btn" data-filter="OS">OS</button>
+                <button class="filter-btn" data-filter="DBMS">DBMS</button>
+                <button class="filter-btn" data-filter="SQL">SQL</button>
+                <button class="filter-btn" data-filter="OOP">OOP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topics Grid -->
+    <div class="topics-grid" id="topicsGrid">
+        <!-- Topics will be populated by JavaScript -->
+    </div>
+
+    <!-- Question Modal -->
+    <div class="modal" id="questionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <button onclick="practiceQuestion()" style="
+                        background: linear-gradient(45deg, #2ecc71, #27ae60);
+                        color: white; border: none; padding: 15px 30px;
+                        border-radius: 25px; font-size: 16px; cursor: pointer;
+                        margin-right: 15px;
+                    ">
+                        <i class="fas fa-play"></i> Practice Answer
+                    </button>
+                    <button onclick="closeModal()" style="
+                        background: #ecf0f1; color: #2c3e50; border: none;
+                        padding: 15px 30px; border-radius: 25px; font-size: 16px;
+                        cursor: pointer;
+                    ">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample questions data
+        const topicsData = {
+            DSA: {
+                icon: "fas fa-sitemap",
+                title: "Data Structures & Algorithms",
+                count: "250+ Questions",
+                questions: [
+                    { text: "Explain Two Pointer Technique", difficulty: "medium" },
+                    { text: "Find the missing number in array", difficulty: "easy" },
+                    { text: "Implement LRU Cache", difficulty: "hard" },
+                    { text: "Detect cycle in linked list", difficulty: "medium" },
+                    { text: "Longest substring without repeat", difficulty: "hard" }
+                ]
+            },
+            OS: {
+                icon: "fas fa-microchip",
+                title: "Operating Systems",
+                count: "120+ Questions",
+                questions: [
+                    { text: "Difference between process and thread", difficulty: "easy" },
+                    { text: "Explain deadlock prevention", difficulty: "medium" },
+                    { text: "Page replacement algorithms", difficulty: "hard" },
+                    { text: "What is semaphore", difficulty: "easy" },
+                    { text: "Memory management techniques", difficulty: "medium" }
+                ]
+            },
+            DBMS: {
+                icon: "fas fa-database",
+                title: "Database Management",
+                count: "180+ Questions",
+                questions: [
+                    { text: "ACID properties explained", difficulty: "easy" },
+                    { text: "Normalization vs denormalization", difficulty: "medium" },
+                    { text: "SQL vs NoSQL differences", difficulty: "medium" },
+                    { text: "Indexing in databases", difficulty: "hard" },
+                    { text: "Database sharding", difficulty: "hard" }
+                ]
+            },
+            SQL: {
+                icon: "fas fa-table",
+                title: "SQL Queries",
+                count: "300+ Questions",
+                questions: [
+                    { text: "Find 2nd highest salary", difficulty: "easy" },
+                    { text: "Self join examples", difficulty: "medium" },
+                    { text: "Window functions usage", difficulty: "hard" },
+                    { text: "Pivot table queries", difficulty: "hard" },
+                    { text: "Recursive CTE", difficulty: "medium" }
+                ]
+            },
+            OOP: {
+                icon: "fas fa-cogs",
+                title: "Object Oriented Programming",
+                count: "90+ Questions",
+                questions: [
+                    { text: "4 pillars of OOP", difficulty: "easy" },
+                    { text: "Polymorphism vs inheritance", difficulty: "medium" },
+                    { text: "SOLID principles", difficulty: "hard" },
+                    { text: "Design patterns overview", difficulty: "medium" },
+                    { text: "Abstract vs interface", difficulty: "easy" }
+                ]
+            }
+        };
+
+        let currentFilter = 'all';
+
+        // Initialize
+        window.onload = function() {
+            renderTopics();
+            setupEventListeners();
+        }
+
+        function renderTopics(filter = 'all') {
+            const grid = document.getElementById('topicsGrid');
+            grid.innerHTML = '';
+
+            Object.keys(topicsData).forEach(topic => {
+                if (filter === 'all' || filter === topic) {
+                    const topicData = topicsData[topic];
+                    const card = createTopicCard(topicData, topic);
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        function createTopicCard(data, topicKey) {
+            const card = document.createElement('div');
+            card.className = 'topic-card';
+            card.onclick = () => openTopicModal(topicKey);
+            
+            card.innerHTML = `
+                <div class="topic-header">
+                    <i class="${data.icon} topic-icon"></i>
+                    <div class="topic-title">${data.title}</div>
+                    <div class="question-count">${data.count}</div>
+                </div>
+                <div class="questions-list">
+                    ${data.questions.slice(0, 5).map(q => `
+                        <div class="question-item" onclick="event.stopPropagation(); openQuestionModal('${topicKey}', '${q.text.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-question-circle" style="color: #3498db; width: 20px;"></i>
+                            <span class="question-text">${q.text}</span>
+                            <span class="question-difficulty ${q.difficulty}">${q.difficulty.toUpperCase()}</span>
+                        </div>
+                    `).join('')}
+                    ${data.questions.length > 5 ? '<div style="text-align: center; padding: 15px; color: #7f8c8d; font-size: 0.9rem;">+ More questions</div>' : ''}
+                </div>
+            `;
+            return card;
+        }
+
+        function setupEventListeners() {
+            // Search
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                filterTopics(e.target.value.toLowerCase());
+            });
+
+            // Filters
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderTopics(currentFilter);
+                });
+            });
+        }
+
+        function filterTopics(searchTerm) {
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.topic-title').textContent.toLowerCase();
+                const questions = card.querySelectorAll('.question-text');
+                
+                let visible = title.includes(searchTerm);
+                
+                questions.forEach(q => {
+                    if (q.textContent.toLowerCase().includes(searchTerm)) {
+                        visible = true;
+                    }
+                });
+                
+                card.style.display = visible ? 'block' : 'none';
+            });
+        }
+
+        function openTopicModal(topicKey) {
+            const data = topicsData[topicKey];
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalContent').innerHTML = `
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">📚 ${data.count}</h3>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    ${data.questions.map(q => `
+                        <div class="question-item" style="margin-bottom: 15px; padding: 15px; background: #f8f9ff; border-radius: 10px;">
+                            <span style="font-weight: 600; color: #2c3e50;">Q: </span>${q.text}
+                            <span class="question-difficulty ${q.difficulty}" style="float: right;">${q.difficulty.toUpperCase()}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            document.getElementById('questionModal').style.display = 'block';
+        }
+
+        function openQuestionModal(topicKey, questionText) {
+            document.getElementById('modalTitle').textContent = 'Practice Question';
+            document.getElementById('modalContent').innerHTML = `
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 25px;">
+                    <h3 style="margin: 0; font-size: 1.5rem;">${questionText}</h3>
+                    <p style="margin-top: 10px; opacity: 0.9;">Practice your answer with AI feedback</p>
+                </div>
+                <div style="background: #f8f9ff; padding: 25px; border-radius: 15px; border-left: 5px solid #2ecc71;">
+                    <h4 style="color: #27ae60; margin-bottom: 15px;"><i class="fas fa-lightbulb"></i> Pro Tip:</h4>
+                    <p>Structure your answer using STAR method (Situation, Task, Action, Result)</p>
+                </div>
+            `;
+            document.getElementById('questionModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('questionModal').style.display = 'none';
+        }
+
+                function practiceQuestion() {
+            const question = document.getElementById('modalTitle').textContent === 'Practice Question' 
+                ? document.querySelector('.modal-content h3').textContent 
+                : 'Help me practice this interview question';
+            window.open(`chatbot.html?question=${encodeURIComponent(question)}`, '_blank');
+            closeModal();
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('questionModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

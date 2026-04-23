@@ -1,136 +1,293 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PrepMate</title>
+    <title>PrepMate - Smart Interview Prep</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Arial;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.03) 2px,
+                rgba(255,255,255,0.03) 4px
+            );
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
         }
 
         /* Navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
-            padding: 15px 40px;
-            background: white;
-            border-bottom: 1px solid #ddd;
+            align-items: center;
+            padding: 20px 60px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
 
-        .navbar a {
-            margin: 0 10px;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            color: black;
+            margin: 0 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2ecc71;
+            transform: translateY(-2px);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(to right, #2c3e50, #2ecc71);
-            color: white;
             text-align: center;
-            padding: 60px;
+            padding: 100px 20px;
+            color: white;
+            position: relative;
         }
 
-        .hero button {
-            padding: 10px 20px;
-            background: #2ecc71;
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px #2ecc71); }
+            to { filter: drop-shadow(0 0 30px #2ecc71); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
             border: none;
             color: white;
-            border-radius: 5px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
         }
 
-        /* Cards */
-        .cards {
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(46, 204, 113, 0.6);
+        }
+
+        /* Login Form */
+        .login-container {
             display: flex;
             justify-content: center;
-            margin: 30px;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        /* Login Section */
-        .login-section {
-            display: flex;
-            margin: 40px;
+            align-items: center;
+            min-height: 400px;
+            padding: 0 20px;
         }
 
         .login-box {
-            padding: 40px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            transform: translateY(50px);
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); }
+        }
+
+        .login-box h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
         }
 
         input {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            width: 250px;
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
         }
 
-        button {
-            padding: 10px;
-            background: blue;
+        input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46,204,113,0.1);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
             color: white;
             border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(46,204,113,0.4);
+        }
+
+        .demo-btn {
+            margin-top: 20px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border: none;
+            padding: 12px 30px;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52,152,219,0.4);
         }
     </style>
 </head>
-
 <body>
+    <div class="bg-animation"></div>
 
-<!-- Navbar -->
-<div class="navbar">
-    <div><b>PrepMate</b></div>
-    <div>
-        <a href="#">DSA</a>
-        <a href="#">Core</a>
-        <a href="#">Programming</a>
-        <a href="#">Aptitude</a>
-        <a href="#">Interview</a>
-        <button>Log in</button>
-        <button>Sign up</button>
-    </div>
-</div>
-
-<!-- Hero -->
-<div class="hero">
-    <h1>Crack Your Dream Placement 🚀</h1>
-    <p>Prepare DSA, Core Subjects & Interviews — All in One Place</p>
-    <button>Get Started</button>
-</div>
-
-<!-- Cards -->
-<div class="cards">
-    <div class="card">
-        <h3>Structured Learning</h3>
-        <p>Step-by-step preparation</p>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            PrepMate
+        </div>
+        <div class="nav-links">
+            <a href="chatbot.html">Chatbot</a>
+            <a href="repository.html">Questions</a>
+            <a href="gd.html">GD Prep</a>
+        </div>
     </div>
 
-    <div class="card">
-        <h3>Interview Prep</h3>
-        <p>Real interview questions</p>
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Crack Your Dream Job 🚀</h1>
+        <p>AI-Powered Interview Prep • Group Discussion Mastery • 10K+ Questions</p>
+        <button class="cta-button" onclick="scrollToLogin()">
+            <i class="fas fa-rocket"></i> Get Started Free
+        </button>
     </div>
-</div>
 
-<!-- Login -->
-<div class="login-section">
-    <div class="login-box">
-        <h2>Welcome Back!</h2>
-        <input type="text" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button onclick="goDashboard()">Login</button>
+    <!-- Login -->
+    <div class="login-container">
+        <div class="login-box">
+            <h2><i class="fas fa-sign-in-alt"></i> Welcome Back!</h2>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button class="login-btn" onclick="goDashboard()">
+                <i class="fas fa-arrow-right"></i> Enter Dashboard
+            </button>
+            <button class="demo-btn" onclick="demoLogin()">
+                Try Demo • No Signup Needed
+            </button>
+        </div>
     </div>
-</div>
 
-<script>
-function goDashboard() {
-    window.location.href = "dashboard.html";
-}
-</script>
+    <script>
+        function scrollToLogin() {
+            document.querySelector('.login-container').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
 
+        function goDashboard() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+            
+            // Store user data in localStorage for demo
+            localStorage.setItem('userEmail', email);
+            window.location.href = "dashboard.html";
+        }
+
+        function demoLogin() {
+            document.getElementById('email').value = 'demo@prepmate.com';
+            document.getElementById('password').value = 'demo123';
+            goDashboard();
+        }
+
+        // Auto-focus email input
+        document.getElementById('email').focus();
+    </script>
 </body>
 </html>
