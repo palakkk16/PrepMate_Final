@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PrepMate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #020617;
+            color: white;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            box-sizing: border-box;
+            z-index: 5;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #3b82f6;
+            text-decoration: none; /* 🔥 removes underline */
+        }   
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            position: relative;
+            text-decoration: none;
+            color: #cbd5e1;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0%;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links button {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            transition: 0.3s;
+        }
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .signup-btn {
+            background: #3b82f6;
+            color: white;
+            transition: 0.3s;
+        }
+        .signup-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        /* HERO (FIXED) */
+        .hero {
+            height: 100vh; /* back to full */
+            background: url("https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1600") center/cover no-repeat;
+            position: relative;
+        }
+
+        /* SMOOTH FADE */
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.5),
+                rgba(0,0,0,0.85),
+                #020617
+            );
+            top: 0;
+            left: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            max-width: 700px;
+        }
+
+        .hero-content p {
+            margin-top: 15px;
+            color: #ccc;
+        }
+
+        /* MODULE SECTION (BETTER SPACING) */
+        .section {
+            margin-top: -200px; /* 🔥 stronger shift */
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+
+        /* FIX SIDE SPACING */
+        .modules {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+
+            max-width: 900px;
+            margin: auto;
+
+            flex-wrap: nowrap; /* 🔥 IMPORTANT */
+        }
+
+        /* BETTER CARDS */
+        .card {
+            width: 240px; /* reduced */
+            height: 190px;
+
+            background: #111827;
+            border-radius: 12px;
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: #1f2937;
+        }
+
+        .card h3 {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin-top: 8px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="index.html" class="logo">PrepMate</a>
+
+    <div class="nav-links">
+        <a href="#">Chatbot</a>
+        <a href="#">GD Prep</a>
+        <a href="#">Questions</a>
+
+        <button class="login-btn" onclick="goLogin()">Login</button>
+        <button class="signup-btn" onclick="goSignup()">Sign Up</button>
+    </div>
+</div>
+
+<div class="hero">
+    <div class="hero-content">
+        <h1>Crack Interviews with AI-Powered Preparation</h1>
+        <p>Practice smarter. Perform better. Get hired.</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Explore Modules</h2>
+
+    <div class="modules">
+
+        <div class="card">
+            <h3>🤖 Chatbot</h3>
+            <p>Practice interview questions</p>
+        </div>
+
+        <div class="card">
+            <h3>💬 GD Prep</h3>
+            <p>Improve discussion skills</p>
+        </div>
+
+        <div class="card">
+            <h3>📚 Questions</h3>
+            <p>Access important questions</p>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    © 2026 PrepMate • Built for smarter interview preparation 🚀
+</div>
+
+<script>
+function goLogin(){window.location.href="login.html";}
+function goSignup(){window.location.href="signup.html";}
+</script>
+
+</body>
+</html>

@@ -14,7 +14,7 @@ def get_ai_response(chat_history):
     url = "https://openrouter.ai/api/v1/chat/completions"
 
     headers = {
-        "Authorization": "Bearer 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",  # 👈 PUT YOUR KEY HERE
+        "Authorization": "Bearer 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",  # 👈 PUT YOUR KEY HERE
         "Content-Type": "application/json",
         "HTTP-Referer": "http://localhost",
         "X-Title": "PrepMate"

@@ -2,236 +2,225 @@
 <html>
 <head>
     <title>PrepMate Chatbot</title>
+
     <style>
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
+            background: #020617;
+            color: white;
             display: flex;
             height: 100vh;
-            background: #f0f2f5;
         }
 
-        /* Sidebar */
+        /* SIDEBAR */
         .sidebar {
             width: 260px;
-            background: #1e293b;
-            color: white;
-            padding: 20px;
+            background: #020617;
+            border-right: 1px solid rgba(255,255,255,0.08);
             display: flex;
             flex-direction: column;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3b82f6;
+            text-decoration: none;
+            margin-bottom: 20px;
         }
 
         .new-chat {
-            padding: 12px;
-            background: #3b82f6;
-            border: none;
-            color: white;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .chat-list {
-            flex: 1;
-        }
-
-        .chat-item {
             padding: 10px;
-            background: #334155;
-            border-radius: 6px;
-            margin-bottom: 8px;
+            background: #3b82f6;
+            border-radius: 8px;
+            text-align: center;
             cursor: pointer;
+            margin-bottom: 20px;
         }
 
-        /* Main */
+        .new-chat:hover {
+            background: #2563eb;
+        }
+
+
+        /* MAIN CHAT */
         .main {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        .navbar {
-            padding: 18px 30px;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
+        /* NAVBAR */
+        .topbar {
+            padding: 18px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 18px;
+            font-weight: 500;
+
+            width: 100%; /* 🔥 ensures full width */
+            box-sizing: border-box;
         }
 
-        .messages {
+        /* CHAT AREA */
+        .chat-box {
             flex: 1;
-            padding: 30px;
+            padding: 25px;
             overflow-y: auto;
-        }
 
-        .user-msg, .bot-msg {
-            margin: 12px 0;
-        }
-
-        .bubble {
-            display: inline-block;
-            padding: 14px 18px;
-            border-radius: 14px;
-            max-width: 65%;
-        }
-
-        .user-msg {
-            text-align: right;
-        }
-
-        .user-msg .bubble {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .bot-msg .bubble {
-            background: #e5e7eb;
-        }
-
-        .input-box {
             display: flex;
-            padding: 15px;
-            background: white;
-            border-top: 1px solid #ddd;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 65%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .user {
+            background: #3b82f6;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        /* BOT (left side) */
+        .bot {
+            background: #1f2937;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        /* INPUT */
+        .input-area {
+            padding: 16px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            gap: 10px;
+            background: #020617;
         }
 
         input {
             flex: 1;
-            padding: 15px;
+            padding: 14px 16px;
             border-radius: 10px;
-            border: 1px solid #ccc;
+            border: none;
+            background: #1f2937;
+            color: white;
+        }
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        input:focus {
+            outline: 1px solid #3b82f6;
         }
 
         button {
-            margin-left: 10px;
-            padding: 15px;
+            padding: 14px 20px;
             background: #3b82f6;
             border: none;
-            color: white;
             border-radius: 10px;
+            color: white;
             cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .typing::after {
+            content: "...";
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0% { content: "."; }
+            33% { content: ".."; }
+            66% { content: "..."; }
         }
     </style>
 </head>
 
 <body>
 
-<!-- Sidebar -->
+<!-- SIDEBAR -->
 <div class="sidebar">
-    <button class="new-chat" onclick="newChat()">+ Start New Chat</button>
 
-    <div class="chat-list" id="chatList"></div>
+    <a href="index.html" class="logo">PrepMate</a>
+
+    <div class="new-chat" onclick="newChat()">+ New Chat</div>
+
+
 </div>
 
-<!-- Main -->
+<!-- MAIN -->
 <div class="main">
 
-    <div class="navbar">PrepMate Chatbot</div>
+    <div class="topbar">
+        AI Interview Assistant
+    </div>
 
-    <div class="messages" id="messages"></div>
+    <div class="chat-box" id="chatBox"></div>
 
-    <div class="input-box">
-        <input type="text" id="input" placeholder="Ask anything...">
-        <button id="sendBtn" onclick="sendMessage()">Send</button>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
     </div>
 
 </div>
 
 <script>
-
-let currentChatId = null;
-
-function newChat() {
-    document.getElementById("messages").innerHTML = "";
-    currentChatId = null;
-}
-
-async function sendMessage() {
-    let input = document.getElementById("input");
+function sendMessage() {
+    let input = document.getElementById("userInput");
     let message = input.value.trim();
 
-    if (message === "") return;
+    if (!message) return;
 
-    let sendBtn = document.getElementById("sendBtn");
-    sendBtn.disabled = true;
+    let chatBox = document.getElementById("chatBox");
 
-    let messages = document.getElementById("messages");
+    // USER MESSAGE
+    let userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.innerText = message;
+    chatBox.appendChild(userMsg);
 
-    // Show user message
-    let userDiv = document.createElement("div");
-    userDiv.className = "user-msg";
-    userDiv.innerHTML = `<div class="bubble">${message}</div>`;
-    messages.appendChild(userDiv);
+    // BOT MESSAGE (only ONE created)
+    let botMsg = document.createElement("div");
+    botMsg.className = "message bot";
+    botMsg.innerHTML = "<span class='typing'>Thinking</span>";
+    chatBox.appendChild(botMsg);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    fetch("http://127.0.0.1:5002/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
+    })
+    .then(res => res.json())
+    .then(data => {
+        // 🔥 IMPORTANT: replace text, NOT append
+        botMsg.innerText = data.reply;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(() => {
+        botMsg.innerText = "Error connecting to server";
+    });
 
     input.value = "";
-
-    // Typing indicator
-    let typingDiv = document.createElement("div");
-    typingDiv.className = "bot-msg";
-    typingDiv.id = "typing";
-    typingDiv.innerHTML = `<div class="bubble">Typing...</div>`;
-    messages.appendChild(typingDiv);
-
-    try {
-        let response = await fetch("http://127.0.0.1:5002/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: message,
-                chat_id: currentChatId
-            })
-        });
-
-        let data = await response.json();
-
-        // Set chat id
-        let isNewChat = currentChatId === null;
-        currentChatId = data.chat_id;
-
-        // Add to sidebar ONLY once (first message)
-        if (isNewChat) {
-            let chatList = document.getElementById("chatList");
-
-            let item = document.createElement("div");
-            item.className = "chat-item";
-            item.innerText = message.substring(0, 25);
-
-            chatList.appendChild(item);
-        }
-
-        // Remove typing
-        document.getElementById("typing").remove();
-
-        // Show bot reply
-        let botDiv = document.createElement("div");
-        botDiv.className = "bot-msg";
-
-        let formattedReply = data.reply.replace(/\n/g, "<br><br>");
-        botDiv.innerHTML = `<div class="bubble">${formattedReply}</div>`;
-        messages.appendChild(botDiv);
-
-    } catch {
-        document.getElementById("typing").remove();
-
-        let botDiv = document.createElement("div");
-        botDiv.className = "bot-msg";
-        botDiv.innerHTML = `<div class="bubble">Error connecting</div>`;
-        messages.appendChild(botDiv);
-    }
-
-    sendBtn.disabled = false;
-    messages.scrollTop = messages.scrollHeight;
 }
 
-// Enter key
-document.getElementById("input").addEventListener("keypress", function(e) {
-    if (e.key === "Enter" && !document.getElementById("sendBtn").disabled) {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
+function newChat() {
+    document.getElementById("chatBox").innerHTML = "";
+}
 </script>
 
 </body>

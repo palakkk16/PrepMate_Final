@@ -4,171 +4,179 @@
     <title>GD Prep - PrepMate</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Same navbar and base styles as other pages - I'll use CSS variables for consistency */
-        :root {
-            --primary: #2ecc71;
-            --secondary: #3498db;
-            --dark: #2c3e50;
-            --light: #f8f9ff;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #020617;
+            color: white;
         }
 
+        /* NAVBAR */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 60px;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
-        .logo { font-size: 24px; font-weight: bold; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #3b82f6;
+            text-decoration: none;
+        }
 
-        /* Hero */
+        /* HERO */
         .hero {
-            background: linear-gradient(135deg, var(--primary), #27ae60);
-            color: white;
             text-align: center;
-            padding: 100px 60px;
+            padding: 80px 60px 50px;
         }
 
-        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
-        .hero p { font-size: 1.3rem; margin-bottom: 40px; opacity: 0.95; }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-        /* Topics Grid */
+        .hero p {
+            color: #9ca3af;
+        }
+
+        /* SECTION */
         .topics-section {
-            max-width: 1400px;
-            margin: 60px auto;
-            padding: 0 60px;
+            padding: 20px 60px 60px;
         }
 
         .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 50px;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
         }
 
+        /* GRID */
         .gd-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
         }
 
+        /* CARD */
         .gd-card {
-            background: white;
-            border-radius: 20px;
+            background: #111827;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: all 0.4s ease;
-            cursor: pointer;
+            transition: 0.3s;
         }
 
         .gd-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            background: #1f2937;
         }
 
+        /* HEADER */
         .gd-header {
-            background: linear-gradient(135deg, var(--secondary), #2980b9);
-            color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .gd-topic { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
-        .gd-type { opacity: 0.9; font-size: 0.95rem; }
+        .gd-topic {
+            font-size: 18px;
+            font-weight: bold;
+        }
 
+        .gd-type {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        /* CONTENT */
         .gd-content {
-            padding: 30px;
+            display: none;        /* 🔥 ensures hidden */
+            padding: 20px;
         }
 
         .opening-line {
-            background: linear-gradient(135deg, #e8f5e8, #d4edda);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--primary);
-        }
-
-        .opening-line strong { color: var(--primary); }
-
-        .key-points {
-            margin-bottom: 20px;
+            background: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 3px solid #3b82f6;
         }
 
         .key-points h4 {
-            color: var(--dark);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .point {
-            background: var(--light);
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 4px solid var(--secondary);
-            transition: all 0.2s ease;
+            background: #020617;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid #3b82f6;
         }
-
-        .point:hover { transform: translateX(5px); }
 
         .closing-line {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            font-style: italic;
-            border-left: 5px solid #f39c12;
+            background: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #3b82f6;
         }
 
+        /* BUTTON */
         .practice-btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, var(--primary), #27ae60);
-            color: white;
+            padding: 12px;
+            background: #3b82f6;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 8px;
+            color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .practice-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(46,204,113,0.4);
+            background: #2563eb;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar, .topics-section, .hero { padding-left: 20px; padding-right: 20px; }
-            .hero h1 { font-size: 2rem; }
-            .gd-grid { grid-template-columns: 1fr; }
+        .gd-content {
+            transition: all 0.3s ease;
         }
+
+        .dropdown {
+            padding: 12px;
+            background: #020617;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dropdown:hover {
+            background: #1f2937;
+        }
+
+        .dropdown-content {
+            display: none;
+            padding: 10px;
+            margin-top: 5px;
+            background: #111827;
+            border-radius: 6px;
+        }
+
+        .point {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #020617;
+            border-radius: 6px;
+        }
+
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <div class="navbar">
-        <div class="logo">
-            <i class="fas fa-users"></i>
-            PrepMate GD Prep
-        </div>
+        <a href="index.html" class="logo">PrepMate</a>
         <a href="dashboard.html" style="color: var(--dark); text-decoration: none;">
             <i class="fas fa-home"></i> Dashboard
         </a>
@@ -182,100 +190,132 @@
 
     <!-- Topics -->
     <div class="topics-section">
-        <h2 class="section-title">🔥 Popular GD Topics</h2>
+        <h2 class="section-title"> Popular GD Topics</h2>
         <div class="gd-grid" id="gdGrid"></div>
     </div>
 
     <script>
-        const gdTopics = [
+            const gdTopics = [
             {
                 topic: "Work From Home: A New Normal?",
                 type: "Social Issue",
-                opening: "Good morning everyone. In today's rapidly evolving work culture, Work From Home has emerged not just as a necessity during pandemics, but as a potential new normal...",
+                opening: "WFH is changing modern work culture...",
                 points: [
-                    "Increased productivity (60% employees report higher focus)",
-                    "Work-life balance improved significantly",
-                    "Cost savings for companies (office space, utilities)",
-                    "Challenges: Isolation, lack of team bonding",
-                    "Cybersecurity risks have increased 300%"
+                    "Higher productivity",
+                    "Better work-life balance",
+                    "Cost savings",
+                    "Isolation issues",
+                    "Security concerns"
                 ],
-                closing: "Thus, WFH represents a balanced hybrid future rather than complete replacement of traditional offices."
+                closing: "WFH will lead to hybrid work models."
             },
             {
                 topic: "Social Media: Bane or Boon?",
                 type: "Technology",
-                opening: "Respected panel and fellow participants. Social media has transformed from a mere communication tool to a global phenomenon shaping opinions, businesses, and societies...",
+                opening: "Social media connects billions worldwide...",
                 points: [
-                    "Connectivity: 4.9B users worldwide",
-                    "Business growth: ₹1.25 lakh crore digital ad market",
-                    "Misinformation spreads 6x faster than truth",
-                    "Mental health impact: 27% teens feel worse",
-                    "Democratic tool or echo chamber?"
+                    "Global connectivity",
+                    "Business growth",
+                    "Fake news issue",
+                    "Mental health impact"
                 ],
-                closing: "Social media is a double-edged sword - its impact depends on responsible usage and regulation."
+                closing: "Responsible use defines its impact."
             },
             {
-                topic: "India's Path to $5 Trillion Economy",
+                topic: "India’s Economy Growth",
                 type: "Economy",
-                opening: "Honorable panelists. India's ambitious $5 trillion economy dream by 2027 requires structural reforms, innovation, and inclusive growth...",
+                opening: "India is rapidly growing economically...",
                 points: [
-                    "Current: $3.7T (5th largest), target realistic",
-                    "Manufacturing push: PLI scheme ₹2 lakh crore",
-                    "Digital India: 1.2B mobile users, UPI leader",
-                    "Job creation challenge: 12M youth enter workforce yearly",
-                    "Sustainability vs growth dilemma"
+                    "Digital growth",
+                    "Manufacturing push",
+                    "Job challenges"
                 ],
-                closing: "With policy continuity and execution excellence, $5T is achievable by 2028."
+                closing: "Sustainable growth is key."
             }
         ];
 
-        window.onload = function() {
+        window.onload = function () {
             renderGDTopics();
-        }
+        };
 
         function renderGDTopics() {
-            const grid = document.getElementById('gdGrid');
+            const grid = document.getElementById("gdGrid");
+            grid.innerHTML = "";
+
             gdTopics.forEach((topic, index) => {
-                const card = document.createElement('div');
-                card.className = 'gd-card';
+                const card = document.createElement("div");
+                card.className = "gd-card";
+
                 card.innerHTML = `
-                    <div class="gd-header">
+                    <div class="gd-header" onclick="toggleGD(${index})">
                         <div class="gd-topic">${topic.topic}</div>
                         <div class="gd-type">${topic.type}</div>
                     </div>
-                    <div class="gd-content">
-                        <div class="opening-line">
-                            <strong>🎯 Opening Line:</strong><br>
-                            "${topic.opening.substring(0, 100)}..."
+
+                    <div class="gd-content" id="gd-${index}" style="display:none;">
+
+                        <div class="dropdown" onclick="toggleSection(event, 'open-${index}')">
+                            <span>Opening Statement</span>
+                            <span id="arrow-open-${index}">▼</span>
                         </div>
-                        <div class="key-points">
-                            <h4><i class="fas fa-list"></i> Key Points</h4>
-                            ${topic.points.slice(0, 3).map(point => `<div class="point">${point}</div>`).join('')}
-                            ${topic.points.length > 3 ? '<div class="point" style="background: #e3f2fd;"><i class="fas fa-plus"></i> + More points</div>' : ''}
+                        <div class="dropdown-content" id="open-${index}" style="display:none;">
+                            ${topic.opening}
                         </div>
-                        <div class="closing-line">
-                            <strong>🏆 Closing Line:</strong><br>
-                            "${topic.closing}"
+
+                        <div class="dropdown" onclick="toggleSection(event, 'points-${index}')">
+                            <span>Key Points</span>
+                            <span id="arrow-points-${index}">▼</span>
                         </div>
-                        <button class="practice-btn" onclick="practiceGD(${index})">
-                            <i class="fas fa-microphone"></i> Practice This Topic
-                        </button>
+                        <div class="dropdown-content" id="points-${index}" style="display:none;">
+                            ${topic.points.map(p => `<div class="point">${p}</div>`).join("")}
+                        </div>
+
+                        <div class="dropdown" onclick="toggleSection(event, 'close-${index}')">
+                            <span>Closing Statement</span>
+                            <span id="arrow-close-${index}">▼</span>
+                        </div>
+                        <div class="dropdown-content" id="close-${index}" style="display:none;">
+                            ${topic.closing}
+                        </div>
+
                     </div>
                 `;
+
                 grid.appendChild(card);
             });
         }
 
-        function practiceGD(index) {
-            const topic = gdTopics[index];
-            const prompt = `Help me prepare for GD topic: "${topic.topic}". Give me:
-1. 3 strong opening lines
-2. 5 key points with data/stats
-3. Counter arguments
-4. Winning closing statement
-5. Tips to dominate discussion`;
-            
-            window.open(`chatbot.html?question=${encodeURIComponent(prompt)}`, '_blank');
+        /* 🔥 ONLY ONE CARD OPENS */
+        function toggleGD(index) {
+            document.querySelectorAll(".gd-content").forEach((el, i) => {
+                if (i !== index) {
+                    el.style.display = "none";
+                }
+            });
+
+            const current = document.getElementById(`gd-${index}`);
+
+            if (current.style.display === "block") {
+                current.style.display = "none";
+            } else {
+                current.style.display = "block";
+            }
+        }
+
+        /* 🔥 DROPDOWN INSIDE CARD */
+        function toggleSection(event, id) {
+            event.stopPropagation();
+
+            const content = document.getElementById(id);
+            const arrow = document.getElementById("arrow-" + id);
+
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                arrow.innerText = "▼";
+            } else {
+                content.style.display = "block";
+                arrow.innerText = "▲";
+            }
         }
     </script>
 </body>
