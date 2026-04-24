@@ -156,18 +156,24 @@
 </div>
 
 <script>
-function login() {
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+    function login() {
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
 
-    let user = JSON.parse(localStorage.getItem("user"));
+        let user = JSON.parse(localStorage.getItem("user"));
 
-    if (user && user.email === email && user.password === password) {
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Invalid credentials");
+        if (user && user.email === email && user.password === password) {
+
+            // 🔥 SAVE LOGGED-IN USER
+            localStorage.setItem("userEmail", email);
+
+            // redirect
+            window.location.href = "dashboard.html";
+
+        } else {
+            alert("Invalid credentials");
+        }
     }
-}
 </script>
 
 </body>
